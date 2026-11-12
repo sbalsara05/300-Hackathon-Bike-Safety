@@ -1,0 +1,559 @@
+[
+ {
+  "file": "clear_road.jsonl",
+  "name": "clear_road",
+  "description": "Empty road. Only the rider's own legs and seat tube are in the scan.",
+  "seed": 0,
+  "frames": 100,
+  "expect": {
+   "peak_max": 0,
+   "basis": "design: rider's legs must not raise a warning"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": []
+  }
+ },
+ {
+  "file": "lean_turn.jsonl",
+  "name": "lean_turn",
+  "description": "Empty road, bike leans 15 degrees right for 3 s so the scan plane hits the road.",
+  "seed": 0,
+  "frames": 100,
+  "expect": {
+   "peak_max": 0,
+   "basis": "design: far points are dropped while leaning"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": []
+  }
+ },
+ {
+  "file": "overtake_wide_2.0m.jsonl",
+  "name": "overtake_wide_2.0m",
+  "description": "Car overtakes on the left with a 2.0 m gap.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 1,
+   "peak_max": 1,
+   "dir": "left",
+   "pass_gap_m": 2.0,
+   "basis": "design: APPROACHING when closing > 2 m/s within 30 m; no close pass at 2.0 m"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 2.0,
+     "min_gap_t": 7.6
+    }
+   ]
+  }
+ },
+ {
+  "file": "overtake_1.2m.jsonl",
+  "name": "overtake_1.2m",
+  "description": "Car overtakes on the left with a 1.2 m gap.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 1.2,
+   "basis": "design: CAUTION when a car will pass closer than 1.5 m"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.2,
+     "min_gap_t": 7.6
+    }
+   ]
+  }
+ },
+ {
+  "file": "overtake_close_0.8m.jsonl",
+  "name": "overtake_close_0.8m",
+  "description": "Car overtakes on the left with a 0.8 m gap.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 0.8,
+   "basis": "design: CAUTION when a car will pass closer than 1.5 m"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 0.8,
+     "min_gap_t": 7.6
+    }
+   ]
+  }
+ },
+ {
+  "file": "truck_overtake_1.2m.jsonl",
+  "name": "truck_overtake_1.2m",
+  "description": "Truck overtakes on the left with a 1.2 m gap.",
+  "seed": 0,
+  "frames": 130,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 1.2,
+   "basis": "design: trucks and buses warn 1.3x earlier"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "truck",
+     "min_gap_m": 1.2,
+     "min_gap_t": 8.2
+    }
+   ]
+  }
+ },
+ {
+  "file": "black_car_overtake_1.0m.jsonl",
+  "name": "black_car_overtake_1.0m",
+  "description": "Black car overtakes at 1.0 m. The LiDAR only sees it inside 6 m; the camera sees it earlier.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 1.0,
+   "basis": "design: camera tracks far cars, LiDAR confirms close in"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 8.4
+    }
+   ]
+  }
+ },
+ {
+  "file": "sun_washout_overtake_1.0m.jsonl",
+  "name": "sun_washout_overtake_1.0m",
+  "description": "Car overtakes at 1.0 m in bright sun: LiDAR range cut to 4 m with 30% dropouts.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 1.0,
+   "basis": "design: cameras still cover range in bright sun"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 8.4
+    }
+   ]
+  }
+ },
+ {
+  "file": "lidar_dropout_overtake_1.0m.jsonl",
+  "name": "lidar_dropout_overtake_1.0m",
+  "description": "Car overtakes at 1.0 m while the LiDAR is silent from 5 s to 9 s.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "sensor_flag": "lidar",
+   "basis": "design: if the LiDAR stops, cameras keep warning"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 8.4
+    }
+   ]
+  }
+ },
+ {
+  "file": "camera_dropout_overtake_1.0m.jsonl",
+  "name": "camera_dropout_overtake_1.0m",
+  "description": "Car overtakes at 1.0 m while the rear camera is silent from 2 s to 9 s.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "dir": "left",
+   "pass_gap_m": 1.0,
+   "sensor_flag": "rear_camera",
+   "basis": "design: if the rear camera stops, the LiDAR keeps warning"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 8.4
+    }
+   ]
+  }
+ },
+ {
+  "file": "rear_collision.jsonl",
+  "name": "rear_collision",
+  "description": "Car directly behind closes at 6 m/s and does not move over.",
+  "seed": 0,
+  "frames": 69,
+  "expect": {
+   "peak_min": 3,
+   "dir": "rear",
+   "danger_lead_s_min": 1.0,
+   "caution_lead_s_min": 2.5,
+   "basis": "design pass threshold: DANGER >= 1.0 s and first CAUTION >= 2.5 s before contact"
+  },
+  "truth_summary": {
+   "contact_t": 6.3,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 0.0,
+     "min_gap_t": 6.3
+    }
+   ]
+  }
+ },
+ {
+  "file": "stopped_car_ahead.jsonl",
+  "name": "stopped_car_ahead",
+  "description": "Car stopped in the lane ahead; the rider does not brake.",
+  "seed": 0,
+  "frames": 91,
+  "expect": {
+   "peak_min": 3,
+   "dir": "front",
+   "danger_lead_s_min": 1.0,
+   "caution_lead_s_min": 2.5,
+   "basis": "design pass threshold: DANGER >= 1.0 s and first CAUTION >= 2.5 s before contact"
+  },
+  "truth_summary": {
+   "contact_t": 8.5,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 0.0,
+     "min_gap_t": 8.6
+    }
+   ]
+  }
+ },
+ {
+  "file": "door_zone_parked.jsonl",
+  "name": "door_zone_parked",
+  "description": "Row of parked cars 1.0 m to the right. No door opens.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 2,
+   "peak_max": 2,
+   "dir": "right",
+   "basis": "design: CAUTION when a parked car within 1.5 m puts the rider in the door zone"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 2.4
+    },
+    {
+     "id": 2,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 3.6
+    },
+    {
+     "id": 3,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 4.8
+    },
+    {
+     "id": 4,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 6.0
+    },
+    {
+     "id": 5,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 7.2
+    },
+    {
+     "id": 6,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 8.4
+    },
+    {
+     "id": 7,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 9.6
+    },
+    {
+     "id": 8,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 10.8
+    }
+   ]
+  }
+ },
+ {
+  "file": "parked_far_3.0m.jsonl",
+  "name": "parked_far_3.0m",
+  "description": "Row of parked cars 3.0 m to the right, outside the door zone.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_max": 1,
+   "basis": "design: door-zone CAUTION only inside 1.5 m"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 1.6
+    },
+    {
+     "id": 2,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 2.8
+    },
+    {
+     "id": 3,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 4.0
+    },
+    {
+     "id": 4,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 5.2
+    },
+    {
+     "id": 5,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 6.4
+    },
+    {
+     "id": 6,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 7.6
+    },
+    {
+     "id": 7,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 8.8
+    },
+    {
+     "id": 8,
+     "cls": "car",
+     "min_gap_m": 3.0,
+     "min_gap_t": 10.0
+    }
+   ]
+  }
+ },
+ {
+  "file": "door_opens.jsonl",
+  "name": "door_opens",
+  "description": "Parked cars 1.0 m to the right; a door swings into the rider's path 11 m ahead.",
+  "seed": 0,
+  "frames": 70,
+  "expect": {
+   "peak_min": 3,
+   "dir": "right",
+   "danger_lead_s_min": 1.0,
+   "basis": "design: DANGER when anything solid is in the path covered in the next 1.5 s"
+  },
+  "truth_summary": {
+   "contact_t": 6.4,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 2.4
+    },
+    {
+     "id": 2,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 3.6
+    },
+    {
+     "id": 3,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 4.8
+    },
+    {
+     "id": 4,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 6.0
+    },
+    {
+     "id": 5,
+     "cls": "car",
+     "min_gap_m": 1.0,
+     "min_gap_t": 6.9
+    },
+    {
+     "id": 6,
+     "cls": "car",
+     "min_gap_m": 3.4,
+     "min_gap_t": 6.9
+    },
+    {
+     "id": 7,
+     "cls": "car",
+     "min_gap_m": 9.3,
+     "min_gap_t": 6.9
+    },
+    {
+     "id": 8,
+     "cls": "car",
+     "min_gap_m": 15.28,
+     "min_gap_t": 6.9
+    },
+    {
+     "id": 20,
+     "cls": "door",
+     "min_gap_m": 0.21,
+     "min_gap_t": 6.5
+    }
+   ]
+  }
+ },
+ {
+  "file": "right_hook.jsonl",
+  "name": "right_hook",
+  "description": "Car overtakes on the left at 1.8 m, then turns right across the rider's path, missing by about 0.7 m.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 3,
+   "dir": "front",
+   "basis": "design: DANGER when anything solid is in the path covered in the next 1.5 s"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "car",
+     "min_gap_m": 0.66,
+     "min_gap_t": 7.8
+    }
+   ]
+  }
+ },
+ {
+  "file": "cyclist_overtake_1.0m.jsonl",
+  "name": "cyclist_overtake_1.0m",
+  "description": "Another cyclist overtakes on the left at 1.0 m, 2.5 m/s faster.",
+  "seed": 0,
+  "frames": 120,
+  "expect": {
+   "peak_min": 1,
+   "dir": "left",
+   "pass_gap_m": 1.0,
+   "basis": "informational: the design gives no rule for cyclists"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "bicycle",
+     "min_gap_m": 1.0,
+     "min_gap_t": 5.6
+    }
+   ]
+  }
+ },
+ {
+  "file": "table_demo_walkers.jsonl",
+  "name": "table_demo_walkers",
+  "description": "Bike stationary on a stand. One person walks past on the left at 1.0 m, one on the right at 1.2 m, one walks up from behind and stops.",
+  "seed": 0,
+  "frames": 140,
+  "expect": {
+   "peak_min": 1,
+   "basis": "informational: the live table demo; the design gives no rule for pedestrians"
+  },
+  "truth_summary": {
+   "contact_t": null,
+   "objects": [
+    {
+     "id": 1,
+     "cls": "person",
+     "min_gap_m": 1.0,
+     "min_gap_t": 4.6
+    },
+    {
+     "id": 2,
+     "cls": "person",
+     "min_gap_m": 1.2,
+     "min_gap_t": 9.1
+    },
+    {
+     "id": 3,
+     "cls": "person",
+     "min_gap_m": 0.65,
+     "min_gap_t": 12.3
+    }
+   ]
+  }
+ }
+]
