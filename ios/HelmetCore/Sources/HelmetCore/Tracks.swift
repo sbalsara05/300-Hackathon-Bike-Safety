@@ -23,6 +23,7 @@ public final class LidarTrack {
     var camT = -Double.infinity
     var adoptedCameraID = false
     var recentRaw: [WarningLevel] = []
+    var heldLevel = WarningLevel.clear, heldT = 0.0
     private var rawY: [Double] = [], rawX: [Double] = []
 
     static func median(_ v: [Double]) -> Double {
@@ -73,6 +74,7 @@ public final class CameraTrack {
     var lastT: Double
     var hits = 1
     var recentRaw: [WarningLevel] = []
+    var heldLevel = WarningLevel.clear, heldT = 0.0
 
     init(id: Int, cls: String, facing: Double, t: Double) { self.id = id; self.cls = cls; self.facing = facing; lastT = t }
 }

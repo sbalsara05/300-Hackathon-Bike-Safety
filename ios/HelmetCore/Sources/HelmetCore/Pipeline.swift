@@ -106,7 +106,7 @@ public final class Pipeline {
             let c = tr.cluster
             if level > .clear { offer(Candidate(level: level, ttc: ttc, dir: direction(c.centroid), range: c.nearest.range)) }
             if tr.hits >= 2 {
-                views.append(view(of: tr, level: level))
+                views.append(view(of: tr, level: hold(&tr.heldLevel, &tr.heldT, level, t)))
             }
         }
         for ct in cameraTracks {
@@ -117,7 +117,8 @@ public final class Pipeline {
             if level > .clear { offer(Candidate(level: level, ttc: ttc, dir: dir, range: ct.dist)) }
             if ct.hits >= cfg.confirmHits {
                 views.append(TrackView(id: ct.id, label: ct.cls, x: ct.x, y: ct.y, width: size.0,
-                                       length: ct.cls == "car" ? 4.5 : max(size.0, 1.0), level: level, cameraOnly: true))
+                                       length: ct.cls == "car" ? 4.5 : max(size.0, 1.0),
+                                       level: hold(&ct.heldLevel, &ct.heldT, level, t), cameraOnly: true))
             }
         }
 
@@ -275,6 +276,13 @@ public final class Pipeline {
     }
 
     // MARK: Warning rules
+
+    /// The level drawn for one object: rises at once, drops only after holdS, the same as the banner,
+    /// so the cone and the banner never disagree.
+    private func hold(_ held: inout WarningLevel, _ heldT: inout Double, _ level: WarningLevel, _ t: Double) -> WarningLevel {
+        if level >= held || t - heldT >= cfg.holdS { held = level; heldT = t }
+        return held
+    }
 
     private func debounce(_ recent: inout [WarningLevel], _ raw: WarningLevel) -> WarningLevel {
         recent.append(raw)
