@@ -98,43 +98,90 @@ struct StatusRow: View {
     }
 }
 
-/// The view from above: rider at the triangle, forward is up. Dots are LiDAR points, boxes are objects.
+/// Proximity radar: rider at the centre, forward is up. A glowing cone points at anything that has
+/// raised a warning, coloured by its level; objects are drawn as solid blocks.
 struct TopDownView: View {
     var output: PipelineOutput?
+    /// Metres from the rider to the outer ring.
+    var rangeM = 9.0
 
     var body: some View {
         Canvas { ctx, size in
-            let scale = min(size.width / 11, size.height / 20)             // pixels per metre
-            let origin = CGPoint(x: size.width / 2, y: size.height * 0.6)
+            let radius = min(size.width, size.height) / 2 - 6
+            let scale = radius / rangeM                                    // pixels per metre
+            let origin = CGPoint(x: size.width / 2, y: size.height / 2)
             func pt(_ x: Double, _ y: Double) -> CGPoint { CGPoint(x: origin.x + x * scale, y: origin.y - y * scale) }
-            for r in [1.5, 5.0, 10.0] {
-                let rect = CGRect(x: origin.x - r * scale, y: origin.y - r * scale, width: 2 * r * scale, height: 2 * r * scale)
-                ctx.stroke(Path(ellipseIn: rect), with: .color(.white.opacity(0.15)), lineWidth: 1)
+            let disc = Path(ellipseIn: CGRect(x: origin.x - radius, y: origin.y - radius, width: 2 * radius, height: 2 * radius))
+
+            // dish: lighter in the middle, fading to black at the edge
+            ctx.fill(disc, with: .radialGradient(Gradient(colors: [Color(white: 0.22), Color(white: 0.08), .black]),
+                                                 center: origin, startRadius: 0, endRadius: radius))
+            ctx.clip(to: disc)
+
+            // cones first, so rings, crosshair and objects sit on top of the glow
+            for tr in (output?.tracks ?? []).sorted(by: { $0.level < $1.level }) where tr.level > .clear {
+                let (mid, half) = bearing(of: tr)
+                var wedge = Path()
+                wedge.move(to: origin)
+                wedge.addArc(center: origin, radius: radius, startAngle: .degrees(mid - half - 90),
+                             endAngle: .degrees(mid + half - 90), clockwise: false)
+                wedge.closeSubpath()
+                let c = tr.level.color
+                ctx.fill(wedge, with: .radialGradient(
+                    Gradient(stops: [.init(color: c.opacity(0.95), location: 0), .init(color: c.opacity(0.75), location: 0.35),
+                                     .init(color: c.opacity(0.25), location: 0.8), .init(color: c.opacity(0), location: 1)]),
+                    center: origin, startRadius: 0, endRadius: radius))
             }
+
+            // rings and crosshair
+            for r in [rangeM / 3, rangeM * 2 / 3, rangeM] {
+                let rect = CGRect(x: origin.x - r * scale, y: origin.y - r * scale, width: 2 * r * scale, height: 2 * r * scale)
+                ctx.stroke(Path(ellipseIn: rect), with: .color(.white.opacity(0.22)), lineWidth: 1.5)
+            }
+            var cross = Path()
+            cross.move(to: CGPoint(x: origin.x - radius, y: origin.y)); cross.addLine(to: CGPoint(x: origin.x + radius, y: origin.y))
+            cross.move(to: CGPoint(x: origin.x, y: origin.y - radius)); cross.addLine(to: CGPoint(x: origin.x, y: origin.y + radius))
+            ctx.stroke(cross, with: .color(.white.opacity(0.3)), lineWidth: 1)
+
             if let out = output {
                 for p in out.points {
                     let c = pt(p.x, p.y)
-                    ctx.fill(Path(ellipseIn: CGRect(x: c.x - 1.5, y: c.y - 1.5, width: 3, height: 3)), with: .color(.white.opacity(0.7)))
+                    ctx.fill(Path(ellipseIn: CGRect(x: c.x - 1, y: c.y - 1, width: 2, height: 2)), with: .color(.white.opacity(0.3)))
                 }
                 for tr in out.tracks {
                     let c = pt(tr.x, tr.y)
                     let rect = CGRect(x: c.x - tr.width * scale / 2, y: c.y - tr.length * scale / 2,
-                                      width: tr.width * scale, height: tr.length * scale)
-                    let color = tr.level == .clear ? Color.gray : tr.level.color
-                    ctx.stroke(Path(roundedRect: rect, cornerRadius: 2), with: .color(color),
-                               style: StrokeStyle(lineWidth: 2, dash: tr.cameraOnly ? [4, 3] : []))
+                                      width: max(tr.width * scale, 5), height: max(tr.length * scale, 5))
+                    let shape = Path(roundedRect: rect, cornerRadius: 2)
+                    if tr.cameraOnly {
+                        // seen by a camera only: position is a rough estimate, so draw it hollow
+                        ctx.stroke(shape, with: .color(.white.opacity(0.6)), style: StrokeStyle(lineWidth: 1.5, dash: [4, 3]))
+                    } else {
+                        ctx.fill(shape, with: .color(.white.opacity(tr.level > .clear ? 1 : 0.75)))
+                    }
                     if let label = tr.label {
-                        ctx.draw(Text(label).font(.caption2).foregroundColor(color), at: CGPoint(x: rect.midX, y: rect.minY - 7))
+                        ctx.draw(Text(label).font(.system(size: 9)).foregroundColor(.white.opacity(0.55)),
+                                 at: CGPoint(x: rect.midX, y: rect.maxY + 7))
                     }
                 }
             }
-            var rider = Path()
-            rider.move(to: CGPoint(x: origin.x, y: origin.y - 9))
-            rider.addLine(to: CGPoint(x: origin.x - 6, y: origin.y + 7))
-            rider.addLine(to: CGPoint(x: origin.x + 6, y: origin.y + 7))
-            rider.closeSubpath()
-            ctx.fill(rider, with: .color(.cyan))
+
+            // the rider's own bike
+            let bike = CGRect(x: origin.x - 0.3 * scale, y: origin.y - 0.9 * scale, width: 0.6 * scale, height: 1.8 * scale)
+            ctx.fill(Path(roundedRect: bike, cornerRadius: 2), with: .color(.white))
         }
+    }
+
+    /// Direction of an object from the rider (degrees clockwise from forward) and half the angle it spans.
+    private func bearing(of tr: TrackView) -> (mid: Double, half: Double) {
+        let mid = atan2(tr.x, tr.y) * 180 / .pi
+        var half = 0.0
+        for (sx, sy) in [(-1.0, -1.0), (-1.0, 1.0), (1.0, -1.0), (1.0, 1.0)] {
+            var d = atan2(tr.x + sx * tr.width / 2, tr.y + sy * tr.length / 2) * 180 / .pi - mid
+            if d > 180 { d -= 360 } else if d < -180 { d += 360 }
+            half = max(half, abs(d))
+        }
+        return (mid, min(max(half + 6, 16), 70))
     }
 }
 
