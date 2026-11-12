@@ -1,0 +1,114 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+		A10000000000000000000001 /* HelmetApp in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000002 /* HelmetApp */; };
+		A10000000000000000000003 /* HelmetHUD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelmetHUD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000011 /* HelmetHUD-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HelmetHUD-Info.plist"; sourceTree = "<group>"; };
+		A10000000000000000000004 /* HelmetHUD */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HelmetHUD; sourceTree = "<group>"; };
+		A10000000000000000000005 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001 /* HelmetApp in Frameworks */, ); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000006 = {isa = PBXGroup; children = (A10000000000000000000004 /* HelmetHUD */, A10000000000000000000011 /* HelmetHUD-Info.plist */, A10000000000000000000007 /* Products */, ); sourceTree = "<group>"; };
+		A10000000000000000000007 /* Products */ = {isa = PBXGroup; children = (A10000000000000000000003 /* HelmetHUD.app */, ); name = Products; sourceTree = "<group>"; };
+		A10000000000000000000008 /* HelmetHUD */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1000000000000000000000D;
+			buildPhases = (A10000000000000000000009 /* Sources */, A10000000000000000000005 /* Frameworks */, A1000000000000000000000A /* Resources */, );
+			buildRules = ();
+			dependencies = ();
+			fileSystemSynchronizedGroups = (A10000000000000000000004 /* HelmetHUD */, );
+			name = HelmetHUD;
+			packageProductDependencies = (A10000000000000000000002 /* HelmetApp */, );
+			productName = HelmetHUD;
+			productReference = A10000000000000000000003 /* HelmetHUD.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A1000000000000000000000B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = { A10000000000000000000008 = { CreatedOnToolsVersion = 16.0; }; };
+			};
+			buildConfigurationList = A1000000000000000000000C;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base, );
+			mainGroup = A10000000000000000000006;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (A10000000000000000000010 /* XCLocalSwiftPackageReference "HelmetCore" */, );
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A10000000000000000000007 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (A10000000000000000000008 /* HelmetHUD */, );
+		};
+		A1000000000000000000000A /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000009 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A10000000000000000000012 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			}; name = Debug; };
+		A10000000000000000000013 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ENABLE_MODULES = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			}; name = Release; };
+		A1000000000000000000000E /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HelmetHUD-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Helmet HUD";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HelmetHUD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			}; name = Debug; };
+		A1000000000000000000000F /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "HelmetHUD-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Helmet HUD";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.HelmetHUD;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			}; name = Release; };
+		A1000000000000000000000C /* Build configuration list for PBXProject "HelmetHUD" */ = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000012 /* Debug */, A10000000000000000000013 /* Release */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A1000000000000000000000D /* Build configuration list for PBXNativeTarget "HelmetHUD" */ = {isa = XCConfigurationList; buildConfigurations = (A1000000000000000000000E /* Debug */, A1000000000000000000000F /* Release */, ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A10000000000000000000010 /* XCLocalSwiftPackageReference "HelmetCore" */ = {isa = XCLocalSwiftPackageReference; relativePath = HelmetCore; };
+		A10000000000000000000002 /* HelmetApp */ = {isa = XCSwiftPackageProductDependency; productName = HelmetApp; };
+	};
+	rootObject = A1000000000000000000000B /* Project object */;
+}

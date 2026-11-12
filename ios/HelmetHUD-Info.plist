@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Sends warnings to the helmet display.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Receives LiDAR scans and video from the bike unit over the phone's hotspot.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Reads your speed during a ride to time warnings.</string>
+</dict>
+</plist>
