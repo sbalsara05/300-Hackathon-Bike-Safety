@@ -121,6 +121,19 @@ public final class Pipeline {
             }
         }
 
+        // One vehicle can show up twice (two groups of LiDAR points, or LiDAR plus a camera estimate).
+        // Keep one box per overlap: the higher warning level first, LiDAR before camera-only.
+        var kept: [TrackView] = []
+        for v in views.sorted(by: { ($0.level.rawValue, $0.cameraOnly ? 0 : 1) > ($1.level.rawValue, $1.cameraOnly ? 0 : 1) }) {
+            let overlaps = kept.contains { k in
+                let ox = min(v.x + v.width / 2, k.x + k.width / 2) - max(v.x - v.width / 2, k.x - k.width / 2)
+                let oy = min(v.y + v.length / 2, k.y + k.length / 2) - max(v.y - v.length / 2, k.y - k.length / 2)
+                return ox > 0 && oy > 0 && ox * oy > 0.3 * min(v.width * v.length, k.width * k.length)
+            }
+            if !overlaps { kept.append(v) }
+        }
+        views = kept
+
         // 4. Hold: rise at once, drop only after holdS of calm
         let raw = best?.level ?? .clear
         if raw >= shown {
